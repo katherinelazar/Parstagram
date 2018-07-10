@@ -52,14 +52,9 @@ public class HomeActivity extends AppCompatActivity {
                         } else {
                             e.printStackTrace();
                         }
-
                     }
                 });
-
-
-
             }
-
         });
 
         refreshButton.setOnClickListener(new View.OnClickListener() {
@@ -68,28 +63,36 @@ public class HomeActivity extends AppCompatActivity {
                 loadTopPosts();
             }
         });
-
-
     }
 
-    private void createPost(String description, ParseFile imageFile, ParseUser user) {
-        final Post newPost = new Post();
-        newPost.setDescription(description);
-        newPost.setImage(imageFile);
-        newPost.setUser(user);
-
-
-        newPost.saveInBackground(new SaveCallback() {
+    private void createPost(final String description, final ParseFile imageFile, final ParseUser user) {
+        imageFile.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
                 if (e == null) {
-                    Log.d("HomeActivity", "create post success");
+                    Log.d("HomeActivity", "image save success");
+
+                    final Post newPost = new Post();
+                    newPost.setDescription(description);
+                    newPost.setImage(imageFile);
+                    newPost.setUser(user);
+
+                    newPost.saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            if (e == null) {
+                                Log.d("HomeActivity", "create post success");
+                            } else {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
                 } else {
                     e.printStackTrace();
                 }
+
             }
         });
-
 
     }
 
@@ -110,14 +113,11 @@ public class HomeActivity extends AppCompatActivity {
                         } catch (ParseException e1) {
                             e1.printStackTrace();
                         }
-
                     }
-
                 } else {
                     e.printStackTrace();
                 }
             }
         });
     }
-
 }

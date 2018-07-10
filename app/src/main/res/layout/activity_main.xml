@@ -16,6 +16,7 @@
         android:layout_marginTop="127dp"
         android:hint="username"
         android:singleLine="false"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.503"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -44,6 +45,7 @@
             android:layout_height="44dp"
             android:layout_gravity="center"
             android:hint="password"
+            android:textColor="@color/white"
             android:inputType="textPassword" />
     </android.support.design.widget.TextInputLayout>
 
@@ -56,6 +58,7 @@
         android:layout_marginBottom="181dp"
         android:background="@drawable/my_button_bg"
         android:text="Login"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
         ParseUser.logInInBackground(username, password, new LogInCallback() {
             @Override
             public void done(ParseUser user, com.parse.ParseException e) {
-                if (e != null) {
+                if (e == null) {
                     Log.d("LoginActivity", "Login Successful");
                     final Intent intent = new Intent(MainActivity.this, HomeActivity.class);
                     startActivity(intent);
