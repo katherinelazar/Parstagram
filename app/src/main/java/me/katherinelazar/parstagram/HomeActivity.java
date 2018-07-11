@@ -1,5 +1,6 @@
 package me.katherinelazar.parstagram;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -103,6 +104,16 @@ public class HomeActivity extends AppCompatActivity {
                         return true;
                     case R.id.action_camera:
                         viewPager.setCurrentItem(3);
+
+                        Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
+                        startActivity(intent);
+
+                        // launch camera.
+                        // it goes outside of application
+                        // then we need to handle the activity result (how do we do this? what method????)
+                        //
+                        // Once we have the photo... how will the user input the description?
+                        // will we create a fragment and show it at this time? will we create a new activity?
                         return true;
                     case R.id.action_likes:
                         viewPager.setCurrentItem(4);
@@ -113,6 +124,8 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
     }
+
+
 
     /**
      * The example view pager which we use in combination with the bottom navigation view to make
