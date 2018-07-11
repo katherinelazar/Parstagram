@@ -11,22 +11,24 @@ import android.widget.EditText;
 import com.parse.LogInCallback;
 import com.parse.ParseUser;
 
-public class MainActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity {
 
     private EditText usernameInput;
     private EditText passwordInput;
     private Button loginBtn;
+    private Button signUpBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_login);
 
         getSupportActionBar().hide();
 
         usernameInput = findViewById(R.id.username_et);
         passwordInput = findViewById(R.id.password_et);
         loginBtn = findViewById(R.id.login_btn);
+        signUpBtn = findViewById(R.id.newUser_btn);
 
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -37,6 +39,16 @@ public class MainActivity extends AppCompatActivity {
                 login(username, password);
             }
         });
+
+        signUpBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                final String username = usernameInput.getText().toString();
+//                final String password = passwordInput.getText().toString();
+            final Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
+            startActivity(intent);
+            }
+        });
     }
 
     private void login(String username, String password) {
@@ -45,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
             public void done(ParseUser user, com.parse.ParseException e) {
                 if (e == null) {
                     Log.d("LoginActivity", "Login Successful");
-                    final Intent intent = new Intent(MainActivity.this, HomeActivity.class);
+                    final Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                     startActivity(intent);
                 } else {
                     Log.e("LoginActivity", "Login failure");
@@ -54,5 +66,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+
+
 }
 

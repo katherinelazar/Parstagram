@@ -4,57 +4,28 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".HomeActivity"
-    android:windowActionBar="false">
+    tools:context=".HomeActivity">
 
-    <Button
-        android:id="@+id/refresh_btn"
-        android:layout_width="366dp"
-        android:layout_height="48dp"
-        android:layout_marginBottom="72dp"
-        android:layout_marginEnd="9dp"
-        android:layout_marginLeft="9dp"
-        android:layout_marginRight="9dp"
-        android:layout_marginStart="9dp"
-        android:layout_marginTop="9dp"
-        android:text="refresh"
+    <android.support.v4.view.ViewPager
+        android:id="@+id/pager"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <android.support.design.widget.BottomNavigationView
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:itemIconTint="@color/colorAccent"
+        app:itemTextColor="@color/colorAccent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/create_btn" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
+        app:menu="@menu/bottom_nav_menu" />
 
-    <Button
-        android:id="@+id/create_btn"
-        android:layout_width="366dp"
-        android:layout_height="48dp"
-        android:layout_marginBottom="9dp"
-        android:layout_marginEnd="9dp"
-        android:layout_marginLeft="9dp"
-        android:layout_marginRight="9dp"
-        android:layout_marginStart="9dp"
-        android:layout_marginTop="334dp"
-        android:text="create"
-        app:layout_constraintBottom_toTopOf="@+id/button3"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
-        android:id="@+id/description_et"
-        android:layout_width="367dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="181dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginLeft="9dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginStart="9dp"
-        android:layout_marginTop="103dp"
-        android:ems="10"
-        android:hint="enter a description"
-        android:inputType="textPersonName"
-        android:selectAllOnFocus="true"
-        app:layout_constraintBottom_toTopOf="@+id/create_btn"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 </android.support.constraint.ConstraintLayout>
