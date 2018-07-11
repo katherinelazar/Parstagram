@@ -26,6 +26,13 @@ public class LoginActivity extends AppCompatActivity {
 
         getSupportActionBar().hide();
 
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        if (currentUser != null) {
+            // do stuff with the user
+            final Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+            startActivity(intent);
+        }
+
         usernameInput = findViewById(R.id.username_et);
         passwordInput = findViewById(R.id.password_et);
         loginBtn = findViewById(R.id.login_btn);
@@ -37,8 +44,13 @@ public class LoginActivity extends AppCompatActivity {
                 final String username = usernameInput.getText().toString();
                 final String password = passwordInput.getText().toString();
 
-                login(username, password);
+
+            // show the signup or login screen
+            login(username, password);
+
             }
+
+
         });
 
         signUpBtn.setOnClickListener(new View.OnClickListener() {
@@ -69,8 +81,6 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
-
-
 
 }
 

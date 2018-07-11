@@ -38,6 +38,8 @@ public class HomeActivity extends AppCompatActivity {
         fragments.add(new NotYetImplementedFragment());
         fragments.add(new NotYetImplementedFragment());
         fragments.add(new NotYetImplementedFragment());
+        fragments.add(new NotYetImplementedFragment());
+        fragments.add(new NotYetImplementedFragment());
 
         // Grab a reference to our view pager.
         viewPager = findViewById(R.id.pager);
@@ -64,6 +66,13 @@ public class HomeActivity extends AppCompatActivity {
                     case 2:
                         bottomNavigation.setSelectedItemId(R.id.action_profile);
                         break;
+                    case 3:
+                        bottomNavigation.setSelectedItemId(R.id.action_camera);
+                        break;
+                    case 4:
+                        bottomNavigation.setSelectedItemId(R.id.action_likes);
+                        break;
+
                 }
             }
             @Override
@@ -87,14 +96,16 @@ public class HomeActivity extends AppCompatActivity {
                         viewPager.setCurrentItem(0);
                         return true;
                     case R.id.action_discover:
-                        // Set the item to the first item in our list.
-                        // This is the discovery placeholder fragment.
                         viewPager.setCurrentItem(1);
                         return true;
                     case R.id.action_profile:
-                        // Set the current item to the third item in our list
-                        // which is the profile fragment placeholder
                         viewPager.setCurrentItem(2);
+                        return true;
+                    case R.id.action_camera:
+                        viewPager.setCurrentItem(3);
+                        return true;
+                    case R.id.action_likes:
+                        viewPager.setCurrentItem(4);
                         return true;
                     default:
                         return false;

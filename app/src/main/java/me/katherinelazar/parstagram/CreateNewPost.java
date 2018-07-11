@@ -43,7 +43,6 @@ public class CreateNewPost extends AppCompatActivity {
                 final File file = new File(imagePath);
                 final ParseFile parseFile = new ParseFile(file);
 
-
                 parseFile.saveInBackground(new SaveCallback() {
                     @Override
                     public void done(ParseException e) {
@@ -90,10 +89,8 @@ public class CreateNewPost extends AppCompatActivity {
                 } else {
                     e.printStackTrace();
                 }
-
             }
         });
-
     }
 
     private void loadTopPosts() {
