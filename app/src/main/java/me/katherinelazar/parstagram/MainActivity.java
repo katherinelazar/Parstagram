@@ -1,6 +1,9 @@
 package me.katherinelazar.parstagram;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -11,11 +14,16 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity {
 
+
+    private final int CAMERA_REQUEST_CODE = 15;
+    private final int CAMERA__ROLL_REQUEST_CODE = 16;
     // The list of fragments used in the view pager. They live in the activity and we pass them down
     //   to the adapter upon creation.
     private final List<Fragment> fragments = new ArrayList<>();
@@ -23,11 +31,20 @@ public class HomeActivity extends AppCompatActivity {
     // reference to view pager
     private ViewPager viewPager;
 
+    private final int REQUEST_CODE = 20;
+
     //The adapter used to display information for our bottom navigation view.
     private ExampleAdapter adapter;
 
     // A reference to our bottom navigation view.
     private BottomNavigationView bottomNavigation;
+
+    CameraFragment cameraFragment = new CameraFragment();
+
+    public final String APP_TAG = "MyCustomApp";
+    public final static int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1034;
+    public String photoFileName = "photo.jpg";
+    File photoFile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +55,7 @@ public class HomeActivity extends AppCompatActivity {
         // Create the placeholder fragments to be passed to the ViewPager
         fragments.add(new NotYetImplementedFragment());
         fragments.add(new NotYetImplementedFragment());
-        fragments.add(new NotYetImplementedFragment());
+        fragments.add(cameraFragment);
         fragments.add(new NotYetImplementedFragment());
         fragments.add(new NotYetImplementedFragment());
 
@@ -73,9 +90,9 @@ public class HomeActivity extends AppCompatActivity {
                     case 4:
                         bottomNavigation.setSelectedItemId(R.id.action_likes);
                         break;
-
                 }
             }
+
             @Override
             public void onPageScrollStateChanged(int state) {
             }
@@ -105,8 +122,8 @@ public class HomeActivity extends AppCompatActivity {
                     case R.id.action_camera:
                         viewPager.setCurrentItem(3);
 
-                        Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
-                        startActivity(intent);
+                        //callbackitem here
+
 
                         // launch camera.
                         // it goes outside of application
@@ -123,8 +140,18 @@ public class HomeActivity extends AppCompatActivity {
                 }
             }
         });
+
     }
 
+//    // ActivityOne.java, time to handle the result of the sub-activity
+//    @Override
+//    protected void onActivityResult ( int requestCode, int resultCode, Intent data){
+//        // REQUEST_CODE is defined above
+//        if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
+//            final Intent intent = new Intent(MainActivity.this, CreateNewPost.class);
+//            startActivity(intent);
+//        }
+//    }
 
 
     /**
@@ -155,5 +182,27 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data){
+        // REQUEST_CODE is defined above
+        if (resultCode == RESULT_OK && requestCode == CAMERA_REQUEST_CODE) {
+            Bitmap bmp = (Bitmap) data.getExtras().get("data");
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+
+            bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
+            byte[] byteArray = stream.toByteArray();
+
+            // convert byte array to Bitmap
+
+            Bitmap bitmap = BitmapFactory.decodeByteArray(byteArray, 0,
+                    byteArray.length);
+
+            cameraFragment.imageView.setImageBitmap(bitmap);
+        }
+
+        if (resultCode == Activity.RESULT_OK && requestCode == CAMERA__ROLL_REQUEST_CODE) {
+
+        }
+    }
 
 }
