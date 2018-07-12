@@ -2,21 +2,8 @@ package me.katherinelazar.parstagram;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-
-import com.parse.FindCallback;
-import com.parse.ParseException;
-import com.parse.ParseFile;
-import com.parse.ParseUser;
-import com.parse.SaveCallback;
-
-import java.io.File;
-import java.util.List;
-
-import me.katherinelazar.parstagram.model.Post;
 
 public class CreateNewPost extends AppCompatActivity {
 
@@ -34,87 +21,64 @@ public class CreateNewPost extends AppCompatActivity {
         createButton = findViewById(R.id.create_btn);
         refreshButton = findViewById(R.id.refresh_btn);
 
-        createButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                final String description = descriptionInput.getText().toString();
-                final ParseUser user = ParseUser.getCurrentUser();
-
-                final File file = new File(imagePath);
-                final ParseFile parseFile = new ParseFile(file);
-
-                parseFile.saveInBackground(new SaveCallback() {
-                    @Override
-                    public void done(ParseException e) {
-                        if (e == null) {
-                            createPost(description, parseFile, user);
-                        } else {
-                            e.printStackTrace();
-                        }
-                    }
-                });
-            }
-        });
-
-        refreshButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                loadTopPosts();
-            }
-        });
+//        createButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                final String description = descriptionInput.getText().toString();
+//                final ParseUser user = ParseUser.getCurrentUser();
+//
+//                final File file = new File(imagePath);
+//                final ParseFile parseFile = new ParseFile(file);
+//
+//                parseFile.saveInBackground(new SaveCallback() {
+//                    @Override
+//                    public void done(ParseException e) {
+//                        if (e == null) {
+//                            createPost(description, parseFile, user);
+//                        } else {
+//                            e.printStackTrace();
+//                        }
+//                    }
+//                });
+//            }
+//        });
+//
+//        refreshButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                loadTopPosts();
+//            }
+//        });
     }
 
-    private void createPost(final String description, final ParseFile imageFile, final ParseUser user) {
-        imageFile.saveInBackground(new SaveCallback() {
-            @Override
-            public void done(ParseException e) {
-                if (e == null) {
-                    Log.d("CreateNewPost", "image save success");
+//    private void createPost(final String description, final ParseFile imageFile, final ParseUser user) {
+//        imageFile.saveInBackground(new SaveCallback() {
+//            @Override
+//            public void done(ParseException e) {
+//                if (e == null) {
+//                    Log.d("CreateNewPost", "image save success");
+//
+//                    final Post newPost = new Post();
+//                    newPost.setDescription(description);
+//                    newPost.setImage(imageFile);
+//                    newPost.setUser(user);
+//
+//                    newPost.saveInBackground(new SaveCallback() {
+//                        @Override
+//                        public void done(ParseException e) {
+//                            if (e == null) {
+//                                Log.d("CreateNewPost", "create post success");
+//                            } else {
+//                                e.printStackTrace();
+//                            }
+//                        }
+//                    });
+//                } else {
+//                    e.printStackTrace();
+//                }
+//            }
+//        });
+//    }
 
-                    final Post newPost = new Post();
-                    newPost.setDescription(description);
-                    newPost.setImage(imageFile);
-                    newPost.setUser(user);
 
-                    newPost.saveInBackground(new SaveCallback() {
-                        @Override
-                        public void done(ParseException e) {
-                            if (e == null) {
-                                Log.d("CreateNewPost", "create post success");
-                            } else {
-                                e.printStackTrace();
-                            }
-                        }
-                    });
-                } else {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-
-    private void loadTopPosts() {
-        final Post.Query postsQuery = new Post.Query();
-        postsQuery.getTop().withUser();
-
-        postsQuery.findInBackground(new FindCallback<Post>() {
-            @Override
-            public void done(List<Post> objects, ParseException e) {
-                if (e == null) {
-                    for (int i = 0; i < objects.size(); i++) {
-                        try {
-                            Log.d("homeactivity", "post[" + i + " ] = "
-                                    + objects.get(i).getDescription()
-                                    + "\nusername = " + objects.get(i).getUser().fetchIfNeeded().getUsername()
-                            );
-                        } catch (ParseException e1) {
-                            e1.printStackTrace();
-                        }
-                    }
-                } else {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
 }

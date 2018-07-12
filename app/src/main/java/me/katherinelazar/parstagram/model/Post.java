@@ -19,7 +19,6 @@ public class Post extends ParseObject{
 
     }
 
-
     public void setDescription(String description) {
         put(KEY_DESCRIPTION, description);
     }
