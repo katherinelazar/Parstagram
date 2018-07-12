@@ -1,4 +1,5 @@
 package me.katherinelazar.parstagram;
+
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -39,11 +40,15 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
     }
 
     // bind values based on position of the element
-
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         // get data based on position
         Post post = mPosts.get(position);
+
+//        ParseUser user = post.getUser();
+//        String txt = user.getUsername();
+//        holder.description.setText(txt);
+
 
         // populate views
         holder.username.setText(post.getUser().getUsername());
@@ -77,8 +82,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
         public TextView username;
         public TextView description;
 
-//        public TextView tvTime;
-
+//      public TextView tvTime;
 
         public ViewHolder(View itemView) {
             super(itemView);
