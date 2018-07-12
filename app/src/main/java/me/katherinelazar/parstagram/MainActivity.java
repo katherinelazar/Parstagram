@@ -9,7 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
@@ -19,7 +19,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements CameraFragment.Callback {
 
 
     private final int CAMERA_REQUEST_CODE = 15;
@@ -53,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         // Create the placeholder fragments to be passed to the ViewPager
+
         fragments.add(new NotYetImplementedFragment());
         fragments.add(new NotYetImplementedFragment());
         fragments.add(cameraFragment);
@@ -61,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Grab a reference to our view pager.
         viewPager = findViewById(R.id.pager);
+        viewPager.setOffscreenPageLimit(0);
 
         // Instantiate our ExampleAdapter which we will use in our ViewPager
         adapter = new ExampleAdapter(getSupportFragmentManager(), fragments);
@@ -74,6 +76,8 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onPageSelected(int position) {
+                getSupportActionBar().show();
+                
                 switch (position) {
                     case 0:
                         bottomNavigation.setSelectedItemId(R.id.action_home);
@@ -82,13 +86,14 @@ public class MainActivity extends AppCompatActivity {
                         bottomNavigation.setSelectedItemId(R.id.action_discover);
                         break;
                     case 2:
-                        bottomNavigation.setSelectedItemId(R.id.action_profile);
+                        bottomNavigation.setSelectedItemId(R.id.action_camera);
+                        getSupportActionBar().hide();
                         break;
                     case 3:
-                        bottomNavigation.setSelectedItemId(R.id.action_camera);
+                        bottomNavigation.setSelectedItemId(R.id.action_likes);
                         break;
                     case 4:
-                        bottomNavigation.setSelectedItemId(R.id.action_likes);
+                        bottomNavigation.setSelectedItemId(R.id.action_profile);
                         break;
                 }
             }
@@ -116,16 +121,13 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.action_discover:
                         viewPager.setCurrentItem(1);
                         return true;
-                    case R.id.action_profile:
-                        viewPager.setCurrentItem(2);
-                        return true;
+
                     case R.id.action_camera:
-                        viewPager.setCurrentItem(3);
+                        viewPager.setCurrentItem(2);
 
                         //callbackitem here
 
 
-                        // launch camera.
                         // it goes outside of application
                         // then we need to handle the activity result (how do we do this? what method????)
                         //
@@ -133,6 +135,9 @@ public class MainActivity extends AppCompatActivity {
                         // will we create a fragment and show it at this time? will we create a new activity?
                         return true;
                     case R.id.action_likes:
+                        viewPager.setCurrentItem(3);
+                        return true;
+                    case R.id.action_profile:
                         viewPager.setCurrentItem(4);
                         return true;
                     default:
@@ -143,7 +148,17 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-//    // ActivityOne.java, time to handle the result of the sub-activity
+    @Override
+    public void hideActionBar() {
+//        getSupportActionBar().hide();
+    }
+
+    @Override
+    public void showActionBar() {
+//        getSupportActionBar().show();
+    }
+
+    //    // ActivityOne.java, time to handle the result of the sub-activity
 //    @Override
 //    protected void onActivityResult ( int requestCode, int resultCode, Intent data){
 //        // REQUEST_CODE is defined above
@@ -158,7 +173,7 @@ public class MainActivity extends AppCompatActivity {
      * The example view pager which we use in combination with the bottom navigation view to make
      * a smooth horizontal sliding transition.
      */
-    static class ExampleAdapter extends FragmentStatePagerAdapter {
+    static class ExampleAdapter extends FragmentPagerAdapter {
 
         /**
          * The list of fragments which we are going to be displaying in the view pager.
