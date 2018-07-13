@@ -10,17 +10,20 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.BitmapTransitionOptions;
+import com.bumptech.glide.request.RequestOptions;
+import com.parse.ParseFile;
 
 import java.util.List;
 
-import me.katherinelazar.parstagram.model.Post;
+import me.katherinelazar.parstagram.model.ImagePost;
 
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
 
-    private List<Post> mPosts;
+    private List<ImagePost> mPosts;
     Context context;
     //pass in tweets array
-    public PostAdapter(List<Post> posts) {
+    public PostAdapter(List<ImagePost> posts) {
         mPosts = posts;
     }
 
@@ -32,7 +35,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
         context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
 
-        View postView = inflater.inflate(R.layout.item_post, parent, false);
+        View postView = inflater.inflate(R.layout.item_post_card, parent, false);
 
         ViewHolder viewHolder = new ViewHolder(postView);
 
@@ -42,13 +45,12 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
     // bind values based on position of the element
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+
         // get data based on position
-        Post post = mPosts.get(position);
+        ImagePost post = mPosts.get(position);
 
-//        ParseUser user = post.getUser();
-//        String txt = user.getUsername();
-//        holder.description.setText(txt);
-
+        loadPostImage(post.getImage(), holder.image);
+        loadAvatarImage(post.getAvatar(), holder.avatar);
 
         // populate views
         holder.username.setText(post.getUser().getUsername());
@@ -58,8 +60,46 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
 
 //        holder.tvTime.setText(parseRelativeData.getRelativeTimeAgo(post.createdAt));
 
+
         Glide.with(context).load(post.getImage().getUrl())
-            .into(holder.ivProfileImage);
+            .into(holder.image);
+    }
+
+    private void loadPostImage(final ParseFile imageFile, final ImageView imageView) {
+        if (imageFile == null) {
+            imageView.setImageResource(R.color.grey_5);
+        } else {
+            Glide.with(imageView)
+                    .asBitmap()
+                    .load(imageFile.getUrl())
+                    .apply(
+                            RequestOptions.centerCropTransform()
+                                    .placeholder(R.color.grey_5)
+                                    .error(R.color.grey_5)
+                    )
+                    .transition(
+                            BitmapTransitionOptions.withCrossFade()
+                    )
+                    .into(imageView);
+        }
+    }
+
+    private void loadAvatarImage(final ParseFile avatarFile, final ImageView avatarView) {
+        if (avatarFile == null) {
+            avatarView.setImageResource(R.drawable.ic_placeholder_circle);
+        } else {
+            Glide.with(avatarView)
+                    .asBitmap()
+                    .load(avatarFile.getUrl())
+                    .apply(
+                            RequestOptions.circleCropTransform()
+                                    .placeholder(R.drawable.ic_placeholder_circle)
+                                    .error(R.drawable.ic_placeholder_circle)
+                    )
+                    .transition(BitmapTransitionOptions.withCrossFade())
+                    .into(avatarView);
+
+        }
     }
 
     // Clean all elements of the recycler
@@ -69,30 +109,55 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
     }
 
     // Add a list of items -- change to type used
-    public void addAll(List<Post> list) {
+    public void addAll(List<ImagePost> list) {
         mPosts.addAll(list);
         notifyDataSetChanged();
     }
 
     // create ViewHolder class
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        public ImageView ivProfileImage;
-        public TextView username;
-        public TextView description;
-
-//      public TextView tvTime;
+        ImageView image;
+        TextView username;
+        ImageView avatar;
+        TextView likeCount;
+        TextView description;
+        TextView timeSince;
+        ImageView likeButton;
+        ImageView commentButton;
+        ImageView messageButton;
 
         public ViewHolder(View itemView) {
             super(itemView);
 
-            // perform findViewById lookups
-
-            ivProfileImage = (ImageView) itemView.findViewById(R.id.post_image);
-            username = (TextView) itemView.findViewById(R.id.username);
-            description = (TextView) itemView.findViewById(R.id.description);
+            image = (ImageView) itemView.findViewById(R.id.post_image_iv);
+            username = (TextView) itemView.findViewById(R.id.username_tv);
+            description = (TextView) itemView.findViewById(R.id.description_tv);
+            avatar = (ImageView) itemView.findViewById(R.id.user_avatar_iv);
+            likeCount = (TextView) itemView.findViewById(R.id.likes_count_tv);
+            timeSince = (TextView) itemView.findViewById(R.id.time_since_tv);
+            likeButton = (ImageView) itemView.findViewById(R.id.like_iv);
+            commentButton = (ImageView) itemView.findViewById(R.id.comment_iv);
+            messageButton = (ImageView) itemView.findViewById(R.id.message_iv);
 //            tvTime = (TextView) itemView.findViewById(R.id.tvTime);
+
+            // itemview's onclicklistener
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            int position = getAdapterPosition();
+
+            if (position != RecyclerView.NO_POSITION) {
+
+                ImagePost post = mPosts.get(position);
+
+                ((MainActivity) context).showDetails(post);
+            }
+
+
         }
     }
 

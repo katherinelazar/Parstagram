@@ -15,13 +15,13 @@ import com.parse.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
-import me.katherinelazar.parstagram.model.Post;
+import me.katherinelazar.parstagram.model.ImagePost;
 
 public class TimeLineFragment extends Fragment {
 
     AsyncHttpClient client;
     PostAdapter postAdapter;
-    ArrayList<Post> posts;
+    ArrayList<ImagePost> posts;
     RecyclerView rvPosts;
 
      // The onCreateView method is called when Fragment should create its View object hierarchy,
@@ -42,13 +42,17 @@ public class TimeLineFragment extends Fragment {
          // construct adapter from data source
          postAdapter = new PostAdapter(posts);
 
+         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
          //recyclerView setup
-         rvPosts.setLayoutManager(new LinearLayoutManager(getContext()));
+         rvPosts.setLayoutManager(linearLayoutManager);
+         linearLayoutManager.setReverseLayout(true);
+         linearLayoutManager.setStackFromEnd(true);
 
          // set the adapter
          rvPosts.setAdapter(postAdapter);
 
          loadTopPosts();
+
 
          return rootView;
      }
@@ -62,24 +66,25 @@ public class TimeLineFragment extends Fragment {
 
      }
 
-
     private void loadTopPosts() {
-        final Post.Query postsQuery = new Post.Query();
-        postsQuery.getTop().withUser();
+        final ImagePost.Query postsQuery = new ImagePost.Query();
+        postsQuery.limit20().withUser();
 
-        postsQuery.findInBackground(new FindCallback<Post>() {
+        postsQuery.findInBackground(new FindCallback<ImagePost>() {
             @Override
-            public void done(List<Post> objects, ParseException e) {
+            public void done(List<ImagePost> objects, ParseException e) {
                 if (e == null) {
+
+                    posts.addAll(objects);
+                    postAdapter.notifyDataSetChanged();
+
                     for (int i = 0; i < objects.size(); i++) {
 
 
 //                        Log.d("homeactivity", "post[" + i + " ] = "
 //                                + objects.get(i).getDescription()
 //                                + "\nusername = " + objects.get(i).getUser().getUsername()
-//                        );
-                        posts.addAll(objects);
-                        postAdapter.notifyDataSetChanged();
+//                        );;
                     }
                 } else {
                     e.printStackTrace();

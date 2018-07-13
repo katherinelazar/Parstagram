@@ -26,3 +26,5 @@
         android:layout_below="@+id/description"
         android:layout_toEndOf="@+id/post_image" />
 </RelativeLayout>
+
+

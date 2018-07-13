@@ -36,6 +36,10 @@ public class Post extends ParseObject{
 
     public void setUser(ParseUser user) { put(KEY_USER, user); }
 
+//    public ParseFile getAvatar() {
+//        return getUser().getAvatar();
+//    }
+
 
     public static class Query extends ParseQuery<Post> {
 

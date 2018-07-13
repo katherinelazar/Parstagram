@@ -29,7 +29,7 @@ import com.parse.SaveCallback;
 import java.io.File;
 import java.io.IOException;
 
-import me.katherinelazar.parstagram.model.Post;
+import me.katherinelazar.parstagram.model.ImagePost;
 
 public class CameraFragment extends Fragment {
 
@@ -89,7 +89,6 @@ public class CameraFragment extends Fragment {
         description = getView().findViewById(R.id.editText);
         post = getView().findViewById(R.id.submit_post);
 
-
         cameraRoll = getView().findViewById(R.id.chooseCameraRoll);
         camera = getView().findViewById(R.id.chooseCamera);
         imageView = getView().findViewById(R.id.imageView);
@@ -101,15 +100,13 @@ public class CameraFragment extends Fragment {
                 // Create intent for picking a photo from the gallery
                 Intent intent = new Intent(Intent.ACTION_PICK,
                         MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                getActivity().startActivityForResult(intent, CAMERA_ROLL_REQUEST_CODE);
+                startActivityForResult(intent, CAMERA_ROLL_REQUEST_CODE);
             }
         });
 
         post.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                Toast.makeText(activity, "clicked post", Toast.LENGTH_LONG).show();
 
                 final String desc = description.getText().toString();
                 final ParseUser user = ParseUser.getCurrentUser();
@@ -132,14 +129,14 @@ public class CameraFragment extends Fragment {
     }
 
     private void createPost(final String description, final ParseFile imageFile, final ParseUser user) {
-        Toast.makeText(activity, "Entered createpost", Toast.LENGTH_LONG).show();
+
         imageFile.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
             if (e == null) {
                 Log.d("CreateNewPost", "image save success");
 
-                final Post newPost = new Post();
+                final ImagePost newPost = new ImagePost();
                 newPost.setDescription(description);
                 newPost.setImage(imageFile);
                 newPost.setUser(user);
@@ -149,7 +146,7 @@ public class CameraFragment extends Fragment {
                     public void done(ParseException e) {
                     if (e == null) {
                         Log.d("CreateNewPost", "create post success");
-                        Toast.makeText(activity, "Successfully post", Toast.LENGTH_LONG).show();
+                        Toast.makeText(activity, "Successfully posted", Toast.LENGTH_LONG).show();
                     } else {
                         e.printStackTrace();
                     }
@@ -185,16 +182,6 @@ public class CameraFragment extends Fragment {
         // REQUEST_CODE is defined above
         if (resultCode == Activity.RESULT_OK && requestCode == CAMERA_REQUEST_CODE) {
 
-//            Bitmap bmp = (Bitmap) data.getExtras().get("data");
-//            ByteArrayOutputStream stream = new ByteArrayOutputStream();
-//
-//            bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
-//            byte[] byteArray = stream.toByteArray();
-//            // convert byte array to Bitmap
-//            Bitmap bitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
-////
-//            imageView.setImageBitmap(bitmap);
-
             Bitmap takenImage = BitmapFactory.decodeFile(file.getAbsolutePath());
             // RESIZE BITMAP, see section below
             // Load the taken image into a preview
@@ -216,7 +203,6 @@ public class CameraFragment extends Fragment {
                     e.printStackTrace();
                 }
                 // Load the selected image into a preview
-
 
                 imageView.setImageBitmap(selectedImage);
 //                ImageView ivPreview = (ImageView) Activity.findViewById(R.id.ivPreview);
@@ -270,6 +256,3 @@ public class CameraFragment extends Fragment {
         });
     }
 }
-
-//android.media.action.ACTION_IMAGE_CAPTURE
-//MediaStore.ACTION_IMAGE_CAPTURE

@@ -5,7 +5,7 @@ import android.app.Application;
 import com.parse.Parse;
 import com.parse.ParseObject;
 
-import me.katherinelazar.parstagram.model.Post;
+import me.katherinelazar.parstagram.model.ImagePost;
 
 public class ParseApp extends Application {
 
@@ -14,7 +14,7 @@ public class ParseApp extends Application {
         super.onCreate();
 
 
-        ParseObject.registerSubclass(Post.class);
+        ParseObject.registerSubclass(ImagePost.class);
         final Parse.Configuration configuration = new Parse.Configuration.Builder(this)
                 .applicationId("klaz-insta")
                 .clientKey("instagram")
