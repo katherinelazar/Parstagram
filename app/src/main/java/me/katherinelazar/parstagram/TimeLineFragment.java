@@ -3,6 +3,7 @@ package me.katherinelazar.parstagram;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -27,6 +28,9 @@ public class TimeLineFragment extends Fragment {
     ArrayList<ImagePost> posts;
     RecyclerView rvPosts;
 
+    //configure the SwipeRefreshLayout during view initialization in the activity:
+    private SwipeRefreshLayout swipeContainer;
+
      // The onCreateView method is called when Fragment should create its View object hierarchy,
      // either dynamically or via XML layout inflation.
      @Override
@@ -48,8 +52,6 @@ public class TimeLineFragment extends Fragment {
          LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
          //recyclerView setup
          rvPosts.setLayoutManager(linearLayoutManager);
-         linearLayoutManager.setReverseLayout(true);
-         linearLayoutManager.setStackFromEnd(true);
 
          // set the adapter
          rvPosts.setAdapter(postAdapter);
@@ -61,6 +63,25 @@ public class TimeLineFragment extends Fragment {
          });
 
          loadTopPosts();
+
+         // Lookup the swipe container view
+         swipeContainer = (SwipeRefreshLayout) rootView.findViewById(R.id.swipeContainer);
+         // Setup refresh listener which triggers new data loading
+         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+             @Override
+             public void onRefresh() {
+                 // Your code to refresh the list here.
+                 // Make sure you call swipeContainer.setRefreshing(false)
+                 // once the network request has completed successfully.
+                //  fetchTimelineAsync(0);
+                 loadTopPosts();
+             }
+         });
+         // Configure the refreshing colors
+         swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
+                 android.R.color.holo_green_light,
+                 android.R.color.holo_orange_light,
+                 android.R.color.holo_red_light);
 
          return rootView;
      }
@@ -90,17 +111,25 @@ public class TimeLineFragment extends Fragment {
 
      }
 
+
     private void loadTopPosts() {
         final ImagePost.Query postsQuery = new ImagePost.Query();
-        postsQuery.limit20().withUser();
+        postsQuery.newestFirst()
+                .limit20()
+                .withUser();
 
         postsQuery.findInBackground(new FindCallback<ImagePost>() {
             @Override
             public void done(List<ImagePost> objects, ParseException e) {
                 if (e == null) {
 
+                    posts.clear();
                     posts.addAll(objects);
                     postAdapter.notifyDataSetChanged();
+                    rvPosts.scrollToPosition(0);
+                    
+                    swipeContainer.setRefreshing(false);
+
                     for (int i = 0; i < objects.size(); i++) {
                         Log.d("homeactivity", "post[" + i + " ] = "
                                 + objects.get(i).getDescription()

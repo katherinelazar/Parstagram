@@ -46,10 +46,12 @@ public class MainActivity extends AppCompatActivity implements CameraFragment.Ca
     public String photoFileName = "photo.jpg";
     File photoFile;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
 
         // Create the placeholder fragments to be passed to the ViewPager
 
@@ -58,6 +60,8 @@ public class MainActivity extends AppCompatActivity implements CameraFragment.Ca
         fragments.add(cameraFragment);
         fragments.add(new NotYetImplementedFragment());
         fragments.add(new NotYetImplementedFragment());
+        fragments.add(detailsFragment);
+
 
         // Grab a reference to our view pager.
         viewPager = findViewById(R.id.pager);
@@ -77,24 +81,24 @@ public class MainActivity extends AppCompatActivity implements CameraFragment.Ca
             public void onPageSelected(int position) {
                 getSupportActionBar().show();
 
-                switch (position) {
-                    case 0:
-                        bottomNavigation.setSelectedItemId(R.id.action_home);
-                        break;
-                    case 1:
-                        bottomNavigation.setSelectedItemId(R.id.action_discover);
-                        break;
-                    case 2:
-                        bottomNavigation.setSelectedItemId(R.id.action_camera);
-                        getSupportActionBar().hide();
-                        break;
-                    case 3:
-                        bottomNavigation.setSelectedItemId(R.id.action_likes);
-                        break;
-                    case 4:
-                        bottomNavigation.setSelectedItemId(R.id.action_profile);
-                        break;
-                }
+//                switch (position) {
+//                    case 0:
+//                        bottomNavigation.setSelectedItemId(R.id.action_home);
+//                        break;
+//                    case 1:
+//                        bottomNavigation.setSelectedItemId(R.id.action_discover);
+//                        break;
+//                    case 2:
+//                        bottomNavigation.setSelectedItemId(R.id.action_camera);
+//                        getSupportActionBar().hide();
+//                        break;
+//                    case 3:
+//                        bottomNavigation.setSelectedItemId(R.id.action_likes);
+//                        break;
+//                    case 4:
+//                        bottomNavigation.setSelectedItemId(R.id.action_profile);
+//                        break;
+//                }
             }
 
             @Override
@@ -143,6 +147,7 @@ public class MainActivity extends AppCompatActivity implements CameraFragment.Ca
         });
     }
 
+
     @Override
     public void hideActionBar() {
 //        getSupportActionBar().hide();
@@ -184,12 +189,14 @@ public class MainActivity extends AppCompatActivity implements CameraFragment.Ca
 
     @Override
     public void sendPostToMainActivity(ImagePost post) {
-        detailsFragment = new ShowDetailsFragment();
+
         detailsFragment.post = post;
 
        // fragmentManager
 
-        fragmentManager.beginTransaction().replace(R.id.action_home, detailsFragment, "TAG").commit();
+//        fragmentManager.beginTransaction().replace(R.id.action_home, detailsFragment, "TAG").commit();
+        viewPager.setCurrentItem(5);
+//        bottomNavigation.setSelectedItemId(R.id.action_discover);
 
         // viewPager.setCurrentItem(detailsFragment, true);
         // TODO change fragment

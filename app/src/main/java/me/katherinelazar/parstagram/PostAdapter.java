@@ -101,18 +101,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
         }
     }
 
-    // Clean all elements of the recycler
-    public void clear() {
-        mPosts.clear();
-        notifyDataSetChanged();
-    }
-
-    // Add a list of items -- change to type used
-    public void addAll(List<ImagePost> list) {
-        mPosts.addAll(list);
-        notifyDataSetChanged();
-    }
-
     // create ViewHolder class
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
