@@ -111,7 +111,6 @@ public class TimeLineFragment extends Fragment {
 
      }
 
-
     private void loadTopPosts() {
         final ImagePost.Query postsQuery = new ImagePost.Query();
         postsQuery.newestFirst()
@@ -127,7 +126,7 @@ public class TimeLineFragment extends Fragment {
                     posts.addAll(objects);
                     postAdapter.notifyDataSetChanged();
                     rvPosts.scrollToPosition(0);
-                    
+
                     swipeContainer.setRefreshing(false);
 
                     for (int i = 0; i < objects.size(); i++) {

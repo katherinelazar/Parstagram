@@ -3,6 +3,7 @@ package me.katherinelazar.parstagram;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import com.bumptech.glide.load.resource.bitmap.BitmapTransitionOptions;
 import com.bumptech.glide.request.RequestOptions;
 import com.parse.ParseFile;
 
+import java.util.Date;
 import java.util.List;
 
 import me.katherinelazar.parstagram.model.ImagePost;
@@ -56,6 +58,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
         holder.username.setText(post.getUser().getUsername());
         holder.description.setText(post.getDescription());
 
+        // get date of ViewHolder item with getCreatedAt
+        Date date = post.getCreatedAt();
+        holder.timeSince.setText(getRelativeTimeAgo(date));
+
 //        ParseRelativeData parseRelativeData = new ParseRelativeData();
 //        holder.tvTime.setText(parseRelativeData.getRelativeTimeAgo(post.createdAt));
 
@@ -81,6 +87,11 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
                     )
                     .into(imageView);
         }
+    }
+
+    public String getRelativeTimeAgo(Date date) {
+        Long datems = date.getTime();
+        return DateUtils.getRelativeTimeSpanString(datems, System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS).toString();
     }
 
     private void loadAvatarImage(final ParseFile avatarFile, final ImageView avatarView) {
@@ -127,7 +138,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
             likeButton = (ImageView) itemView.findViewById(R.id.like_iv);
             commentButton = (ImageView) itemView.findViewById(R.id.comment_iv);
             messageButton = (ImageView) itemView.findViewById(R.id.message_iv);
-//            tvTime = (TextView) itemView.findViewById(R.id.tvTime);
 
             // itemview's onclicklistener
             itemView.setOnClickListener(this);
