@@ -20,6 +20,7 @@ import me.katherinelazar.parstagram.model.ImagePost;
 
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
 
+    private AdapterListener adapterListener;
     private List<ImagePost> mPosts;
     Context context;
     //pass in tweets array
@@ -28,7 +29,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
     }
 
     // for each row inflate layout and pass into ViewHolder class
-
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -57,7 +57,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
         holder.description.setText(post.getDescription());
 
 //        ParseRelativeData parseRelativeData = new ParseRelativeData();
-
 //        holder.tvTime.setText(parseRelativeData.getRelativeTimeAgo(post.createdAt));
 
 
@@ -154,11 +153,20 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
 
                 ImagePost post = mPosts.get(position);
 
-                ((MainActivity) context).showDetails(post);
+                adapterListener.sendPostToDetails(post);
+
             }
-
-
         }
+    }
+
+    // set teh listener, called from fragment
+    public void setListener(AdapterListener listener) {
+        adapterListener = listener;
+    }
+    //listener to viewholer. intent to activity (wrapped post)
+
+    public interface AdapterListener {
+        void sendPostToDetails(ImagePost post);
     }
 
     @Override

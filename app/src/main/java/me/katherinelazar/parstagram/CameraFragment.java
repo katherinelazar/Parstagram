@@ -43,7 +43,7 @@ public class CameraFragment extends Fragment {
     private final int CAMERA_ROLL_REQUEST_CODE = 16;
 
     public final String APP_TAG = "MyCustomApp";
-    public final static int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1034;
+    // public final static int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1034;
 
 
     File file;
@@ -100,6 +100,14 @@ public class CameraFragment extends Fragment {
                 // Create intent for picking a photo from the gallery
                 Intent intent = new Intent(Intent.ACTION_PICK,
                         MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+
+//                // Create a File reference to access to future access
+//                file = getPhotoFileUri(photoFileName);
+//
+//                Uri fileProvider = FileProvider.getUriForFile(activity, "com.codepath.fileprovider", file);
+//                intent.putExtra(MediaStore.EXTRA_OUTPUT, fileProvider);
+
+
                 startActivityForResult(intent, CAMERA_ROLL_REQUEST_CODE);
             }
         });

@@ -1,9 +1,11 @@
 package me.katherinelazar.parstagram;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +21,7 @@ import me.katherinelazar.parstagram.model.ImagePost;
 
 public class TimeLineFragment extends Fragment {
 
+    private MainActivityListener listener;
     AsyncHttpClient client;
     PostAdapter postAdapter;
     ArrayList<ImagePost> posts;
@@ -51,11 +54,32 @@ public class TimeLineFragment extends Fragment {
          // set the adapter
          rvPosts.setAdapter(postAdapter);
 
-         loadTopPosts();
+         postAdapter.setListener(new PostAdapter.AdapterListener() {
+             public void sendPostToDetails(ImagePost post) {
+                 listener.sendPostToMainActivity(post);
+             }
+         });
 
+         loadTopPosts();
 
          return rootView;
      }
+
+     // Listen for cue to display details fragment
+    public interface MainActivityListener {
+        void sendPostToMainActivity(ImagePost post);
+    }
+
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof MainActivityListener) {
+            listener = (MainActivityListener) context;
+        } else {
+            throw new ClassCastException(context.toString() + " must implement Camera Fragment");
+        }
+    }
 
      // This event is triggered soon after onCreateView().
      // Any view setup should occur here.  E.g., view lookups and attaching view listeners.
@@ -77,14 +101,11 @@ public class TimeLineFragment extends Fragment {
 
                     posts.addAll(objects);
                     postAdapter.notifyDataSetChanged();
-
                     for (int i = 0; i < objects.size(); i++) {
-
-
-//                        Log.d("homeactivity", "post[" + i + " ] = "
-//                                + objects.get(i).getDescription()
-//                                + "\nusername = " + objects.get(i).getUser().getUsername()
-//                        );;
+                        Log.d("homeactivity", "post[" + i + " ] = "
+                                + objects.get(i).getDescription()
+                                + "\nusername = " + objects.get(i).getUser().getUsername()
+                        );;
                     }
                 } else {
                     e.printStackTrace();
@@ -92,4 +113,4 @@ public class TimeLineFragment extends Fragment {
             }
         });
     }
- }
+}

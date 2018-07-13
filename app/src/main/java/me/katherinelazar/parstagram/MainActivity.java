@@ -14,8 +14,11 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements CameraFragment.Callback {
+import me.katherinelazar.parstagram.model.ImagePost;
 
+public class MainActivity extends AppCompatActivity implements CameraFragment.Callback, TimeLineFragment.MainActivityListener {
+
+    final FragmentManager fragmentManager = getSupportFragmentManager();
 
     private final int CAMERA_REQUEST_CODE = 15;
     private final int CAMERA__ROLL_REQUEST_CODE = 16;
@@ -34,6 +37,7 @@ public class MainActivity extends AppCompatActivity implements CameraFragment.Ca
     // A reference to our bottom navigation view.
     private BottomNavigationView bottomNavigation;
 
+    ShowDetailsFragment detailsFragment = new ShowDetailsFragment();
     CameraFragment cameraFragment = new CameraFragment();
     TimeLineFragment timeLineFragment = new TimeLineFragment();
 
@@ -46,7 +50,6 @@ public class MainActivity extends AppCompatActivity implements CameraFragment.Ca
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-
 
         // Create the placeholder fragments to be passed to the ViewPager
 
@@ -121,9 +124,6 @@ public class MainActivity extends AppCompatActivity implements CameraFragment.Ca
                     case R.id.action_camera:
                         viewPager.setCurrentItem(2);
 
-                        //callbackitem here
-
-
                         // it goes outside of application
                         // then we need to handle the activity result (how do we do this? what method????)
                         //
@@ -141,7 +141,6 @@ public class MainActivity extends AppCompatActivity implements CameraFragment.Ca
                 }
             }
         });
-
     }
 
     @Override
@@ -153,7 +152,6 @@ public class MainActivity extends AppCompatActivity implements CameraFragment.Ca
     public void showActionBar() {
 //        getSupportActionBar().show();
     }
-
 
     /**
      * The example view pager which we use in combination with the bottom navigation view to make
@@ -181,29 +179,19 @@ public class MainActivity extends AppCompatActivity implements CameraFragment.Ca
         public int getCount() {
             return fragments.size();
         }
+
     }
 
-//    @Override
-//    public void onActivityResult(int requestCode, int resultCode, Intent data){
-//        // REQUEST_CODE is defined above
-//        if (resultCode == RESULT_OK && requestCode == CAMERA_REQUEST_CODE) {
-//            Bitmap bmp = (Bitmap) data.getExtras().get("data");
-//            ByteArrayOutputStream stream = new ByteArrayOutputStream();
-//
-//            bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
-//            byte[] byteArray = stream.toByteArray();
-//
-//            // convert byte array to Bitmap
-//
-//            Bitmap bitmap = BitmapFactory.decodeByteArray(byteArray, 0,
-//                    byteArray.length);
-//
-//            cameraFragment.imageView.setImageBitmap(bitmap);
-//        }
-//
-//        if (resultCode == Activity.RESULT_OK && requestCode == CAMERA__ROLL_REQUEST_CODE) {
-//
-//        }
-//    }
+    @Override
+    public void sendPostToMainActivity(ImagePost post) {
+        detailsFragment = new ShowDetailsFragment();
+        detailsFragment.post = post;
 
+       // fragmentManager
+
+        fragmentManager.beginTransaction().replace(R.id.action_home, detailsFragment, "TAG").commit();
+
+        // viewPager.setCurrentItem(detailsFragment, true);
+        // TODO change fragment
+    }
 }

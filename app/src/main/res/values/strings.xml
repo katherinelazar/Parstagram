@@ -11,8 +11,8 @@
     <string name="password">password</string>
     <string name="username">username</string>
 
-    <string name="camera_roll">camera roll</string>
-    <string name="camera">camera</string>
+    <string name="camera_roll">Camera Roll</string>
+    <string name="camera">Camera</string>
 
 
     <!-- TODO: Remove or change this placeholder text -->
