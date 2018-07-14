@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity implements CameraFragment.Ca
     ShowDetailsFragment detailsFragment = new ShowDetailsFragment();
     CameraFragment cameraFragment = new CameraFragment();
     TimeLineFragment timeLineFragment = new TimeLineFragment();
+    ProfileFragment profileFragment = new ProfileFragment();
 
     public final String APP_TAG = "MyCustomApp";
     public final static int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1034;
@@ -59,6 +60,7 @@ public class MainActivity extends AppCompatActivity implements CameraFragment.Ca
         fragments.add(new NotYetImplementedFragment());
         fragments.add(cameraFragment);
         fragments.add(new NotYetImplementedFragment());
+        fragments.add(profileFragment);
         fragments.add(new NotYetImplementedFragment());
         fragments.add(detailsFragment);
 
@@ -80,7 +82,7 @@ public class MainActivity extends AppCompatActivity implements CameraFragment.Ca
             @Override
             public void onPageSelected(int position) {
                 getSupportActionBar().show();
-
+//                whoops....turns out i didn't need any of this
 //                switch (position) {
 //                    case 0:
 //                        bottomNavigation.setSelectedItemId(R.id.action_home);
@@ -124,10 +126,8 @@ public class MainActivity extends AppCompatActivity implements CameraFragment.Ca
                     case R.id.action_discover:
                         viewPager.setCurrentItem(1);
                         return true;
-
                     case R.id.action_camera:
                         viewPager.setCurrentItem(2);
-
                         // it goes outside of application
                         // then we need to handle the activity result (how do we do this? what method????)
                         //
@@ -198,7 +198,5 @@ public class MainActivity extends AppCompatActivity implements CameraFragment.Ca
         viewPager.setCurrentItem(5);
 //        bottomNavigation.setSelectedItemId(R.id.action_discover);
 
-        // viewPager.setCurrentItem(detailsFragment, true);
-        // TODO change fragment
     }
 }
