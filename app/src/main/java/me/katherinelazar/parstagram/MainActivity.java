@@ -1,5 +1,6 @@
 package me.katherinelazar.parstagram;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -10,13 +11,15 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
+import com.parse.ParseUser;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import me.katherinelazar.parstagram.model.ImagePost;
 
-public class MainActivity extends AppCompatActivity implements CameraFragment.Callback, TimeLineFragment.MainActivityListener {
+public class MainActivity extends AppCompatActivity implements CameraFragment.Callback, ProfileFragment.Callback, TimeLineFragment.MainActivityListener {
 
     final FragmentManager fragmentManager = getSupportFragmentManager();
 
@@ -55,6 +58,7 @@ public class MainActivity extends AppCompatActivity implements CameraFragment.Ca
 
 
         // Create the placeholder fragments to be passed to the ViewPager
+
 
         fragments.add(timeLineFragment);
         fragments.add(new NotYetImplementedFragment());
@@ -195,8 +199,16 @@ public class MainActivity extends AppCompatActivity implements CameraFragment.Ca
        // fragmentManager
 
 //        fragmentManager.beginTransaction().replace(R.id.action_home, detailsFragment, "TAG").commit();
-        viewPager.setCurrentItem(5);
+        viewPager.setCurrentItem(6);
 //        bottomNavigation.setSelectedItemId(R.id.action_discover);
 
+    }
+
+    @Override
+    public void onLogoutClicked() {
+        ParseUser.logOutInBackground();
+
+        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+        startActivity(intent);
     }
 }
