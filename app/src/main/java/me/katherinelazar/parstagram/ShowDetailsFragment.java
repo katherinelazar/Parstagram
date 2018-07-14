@@ -2,6 +2,7 @@ package me.katherinelazar.parstagram;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,8 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.parse.ParseFile;
+
+import java.util.Date;
 
 import me.katherinelazar.parstagram.model.ImagePost;
 import me.katherinelazar.parstagram.model.UserWrapper;
@@ -36,14 +39,12 @@ public class ShowDetailsFragment extends Fragment {
     }
 
 
-
     // This event is triggered soon after onCreateView().
     // Any view setup should occur here.  E.g., view lookups and attaching view listeners.
     @Override
     public void onViewCreated(View itemView, Bundle savedInstanceState) {
         // Setup any handles to view objects here
         // EditText etFoo = (EditText) view.findViewById(R.id.etFoo);
-
 
         image = (ImageView) itemView.findViewById(R.id.post_image_iv);
         username = (TextView) itemView.findViewById(R.id.username_tv);
@@ -60,17 +61,31 @@ public class ShowDetailsFragment extends Fragment {
         username.setText(user.getUsername());
         description.setText(post.getDescription());
 
-        ParseFile userProfile = user.getAvatar();
+//        // populate views
+//        holder.username.setText(post.getUser().getUsername());
+//        holder.description.setText(post.getDescription());
+
+
+        ParseFile avatar = user.getAvatar();
 
         ParseFile postImage = post.getImage();
 
+        // get date of ViewHolder item with getCreatedAt
+        Date date = post.getCreatedAt();
+        timeSince.setText(getRelativeTimeAgo(date));
 
-        Glide.with(getContext()).load(postImage.getUrl()).into(avatar);
+
+       //  Glide.with(getContext()).load(postImage.getUrl()).into(avatar);
 
 //        Glide.with(getContext()).load(userProfile.getUrl()).into(avatar);
         Glide.with(getContext()).load(postImage.getUrl()).into(image);
 
 
+    }
+
+    public String getRelativeTimeAgo(Date date) {
+        Long datems = date.getTime();
+        return DateUtils.getRelativeTimeSpanString(datems, System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS).toString();
     }
 }
 
